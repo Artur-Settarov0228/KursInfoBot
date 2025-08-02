@@ -1,22 +1,18 @@
-
 import requests
 
-
-def kurs_ol(valyuta):
-    print(f"Valyuta kelib tushdi: {valyuta}")  # DEBUG
-
-    url = 'https://cbu.uz/uz/arkhiv-kursov-valyut/json/'  # Markaziy Bank API
+def kurs_ol(valyuta: str) -> float:
+    url = "https://cbu.uz/oz/arkhiv-kursov-valyut/json/"
     response = requests.get(url)
-    
-    if response.status_code != 200:
-        return "Valyuta ma'lumotlarini olishda xatolik."
-
     data = response.json()
 
-    for item in data:
-        if item['Ccy'].lower() == valyuta.lower():
-            return f"💰 1 {item['Ccy']} = {item['Rate']} so'm"
+    for val in data:
+        if val['Ccy'] == valyuta.upper():
+            return float(val['Rate'])
+    return None
 
-    return "Bunday valyuta topilmadi. Masalan: USD, EUR, RUB deb yozing."
-
-        
+def hisobla_kurs(valyuta: str, summa: float) -> str:
+    kurs = kurs_ol(valyuta)
+    if kurs is None:
+        return "Bunday valyuta topilmadi. Masalan: USD, EUR, RUB deb yozing."
+    natija = summa * kurs
+    return f"{summa} {valyuta.upper()} ≈ {natija:.2f} so'm"
