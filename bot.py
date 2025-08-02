@@ -11,11 +11,13 @@ def get_updates(offset =None):
     return responce.json()
 
 URL = f'https://api.telegram.org/bot{TOKEN}/sendMessage'
+
+
+
 def send_message(chat_id, text, reply_markup=None):
     data = {
         'chat_id': chat_id,
-        'text': text,
-        'parse_mode': 'HTML'
+        'text': text
     }
 
     if reply_markup:
